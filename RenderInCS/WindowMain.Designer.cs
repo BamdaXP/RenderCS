@@ -1,6 +1,6 @@
 ﻿namespace RenderInCS
 {
-    partial class Form1
+    partial class WindowMain
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,10 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // WindowMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Name = "WindowMain";
+            this.Text = "Render";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
