@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
+    <Compile Include="DMesh.cs" />
     <Compile Include="Structures.cs" />
     <Compile Include="WindowMain.cs">
       <SubType>Form</SubType>

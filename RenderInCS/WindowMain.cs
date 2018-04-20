@@ -38,7 +38,7 @@ namespace RenderInCS
         {
             Point a = new Point(70, 60);
             Point b = new Point(10, 40);
-            Point c = new Point(0, 0);
+            Point c = new Point(10, 20);
             SetLine(a, b, Color.Black);
             SetTri(a,b,c,Color.Black);
         }
@@ -201,11 +201,10 @@ namespace RenderInCS
             int xMiddle = (middle.Y - up.Y) * (bottom.X - up.X) / (bottom.Y - up.Y) + up.X;
             Point anotherMiddle = new Point(xMiddle, middle.Y);
 
-            
-            // 画平底  
+            //Divide the triangle into two pieces
+            //Draw the upper one with flat bottom
             SetTriFlatBottom(anotherMiddle, middle, up, color);
-
-            // 画平顶  
+            //Draw the lower one with flat top 
             SetTriFlatTop(anotherMiddle, middle, bottom, color);
                
             
