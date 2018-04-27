@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RenderInCS.Properties
+namespace RenderCS.Properties
 {
 
 

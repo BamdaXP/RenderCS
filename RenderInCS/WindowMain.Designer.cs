@@ -1,4 +1,4 @@
-﻿namespace RenderInCS
+﻿namespace RenderCS
 {
     partial class WindowMain
     {

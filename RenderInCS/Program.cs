@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RenderInCS
+namespace RenderCS
 {
     static class Program
     {
