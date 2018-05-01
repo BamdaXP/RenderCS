@@ -52,6 +52,7 @@
     <Compile Include="Device\Camera.cs" />
     <Compile Include="DStructures\DCube.cs" />
     <Compile Include="DStructures\DMesh.cs" />
+    <Compile Include="DStructures\DObject.cs" />
     <Compile Include="DStructures\DVertex.cs" />
     <Compile Include="Device\Light.cs" />
     <Compile Include="DStructures\DTriAngle.cs" />

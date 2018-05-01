@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Numerics;
 //using Microsoft.DirectX;
 //using Microsoft.DirectX.Direct3D;
@@ -10,15 +11,16 @@ namespace RenderCS
         public Vector3 position;
         public Vector3 towards;
 
-        public float nearWidth = 4;
-        public float nearHeight = 8;
-        public float zNearPlane = 2;
-        public float zFarPlane = 200;
+        public float fovy = 90f / 180f * (float)Math.PI;
+        public float aspect = 6f / 8f;
+        public float farZ = 100f;
+        public float nearZ = 1f;
+
 
         public Camera()
         {
             position = new Vector3(0, 0, 0);
-            towards = new Vector3(0, 0, 1);
+            towards = new Vector3(0, 0, -1);
         }
 
     }

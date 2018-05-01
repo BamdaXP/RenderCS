@@ -8,14 +8,14 @@ using System.Drawing;
 
 namespace RenderCS
 {
-    class DBall : DMesh
+    class DMeshBall : DMesh
     {
         public float radius { get; private set; }
         public int precition { get; private set; }
 
-        public DBall(Vector3 _pos,float radius,int precition,Color color)
+        public DMeshBall(float radius,int precition,Color color)
         {
-            worldPosition = _pos;
+
             float stepAngle = (float)Math.PI / precition;
 
             int countSitar = 0;

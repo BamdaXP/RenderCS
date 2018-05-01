@@ -26,14 +26,14 @@ namespace RenderCS
         public int deltaTime = 500;//in ms
         //public delegate void Update();
 
-        public List<DMesh> objs;
-
+        public List<DObject> objs;
+        public List<Light> lights;
         
 
-        public float angle=0f;
+        public float duration=0f;
         public WindowMain()
         {
-            objs = new List<DMesh>();
+            
             ThreadPool.SetMaxThreads(10, 10);
 
             InitializeComponent();
@@ -44,7 +44,7 @@ namespace RenderCS
 
             InitializeObjects();
 
-
+            InitializeLights();
             
             
 
@@ -73,13 +73,25 @@ namespace RenderCS
 
         public void InitializeObjects()
         {
+            objs = new List<DObject>();
             AddCube();
         }
 
+        public void InitializeLights()
+        {
+            lights = new List<Light>();
+            Light l = new Light(new Vector3(4,4,4));
+            lights.Add(l);
+
+        }
+
+
+
+
         public void AddCube()
         {
-            DCube cube = new DCube(new Vector3(0, 0, 4), 3, 3, 3);
-            cube.FadeBehind(camera);
+            DMesh cubeMesh = new DCubeMesh(6, 6, 6);
+            DObject cube = new DObject(new Vector3(0,0,-10),cubeMesh);
 
             objs.Add(cube);
         }
@@ -100,7 +112,7 @@ namespace RenderCS
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -116,18 +128,16 @@ namespace RenderCS
 
 
         #region VirtualWorld Painters
-        private void DrawMesh(DMesh mesh)
+        private void DrawDObject(DObject obj)
         {
-            foreach (DTriAngle tri in mesh.faces)
+            foreach (DTriAngle tri in obj.matureFaces)
             {
                 //skip the tri behind
                 if (tri.visible == false)
                 {
                     continue;
                 }
-                //pack up
-                DrawTriArgs args = new DrawTriArgs(tri, mesh);
-                Object o = args as Object;
+                Object o = tri as Object;
 
                 //Start thread pools
 
@@ -137,35 +147,24 @@ namespace RenderCS
             }
         }
 
-        class DrawTriArgs
-        {
-            public DTriAngle tri;
-            public DMesh mesh;
-            public DrawTriArgs(DTriAngle tri,DMesh mesh)
-            {
-                this.tri = tri;
-                this.mesh = mesh;
-            }
-        }
+       
         private void DrawTri(Object o)
         {
             bool flag = Monitor.TryEnter(bitmap, 1000);
-            //unpack
-            DrawTriArgs args = o as DrawTriArgs;
-            DMesh mesh = args.mesh;
-            DTriAngle tri = args.tri;
+
+            DTriAngle tri = o as DTriAngle;
 
             try
             {
                 if (flag)
                 {
-                    Point a = tri.p1.ToScreenPoint(mesh, camera, view);
-                Point b = tri.p2.ToScreenPoint(mesh, camera, view);
-                Point c = tri.p3.ToScreenPoint(mesh, camera, view);
+                Point a = tri.p1.ToScreenPoint(view);
+                Point b = tri.p2.ToScreenPoint(view);
+                Point c = tri.p3.ToScreenPoint(view);
                 SetTri(a, b, c, tri.p1.color, tri.p2.color, tri.p3.color);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -502,15 +501,32 @@ namespace RenderCS
         private void GraphicsUpdate(object sender,EventArgs e)
         {
             Clear(Color.Black);
+
+            objs[0].ClearRotation();
+            //objs[0].AddRotation(new Vector3(0, 1, 0), duration*5 / 180f * (float)Math.PI);
+
             foreach (var obj in objs)
             {
-                DrawMesh(obj);
+                
+                obj.UpdateDObject(camera);
+                obj.Lighten(lights,camera);
+                DrawDObject(obj);
             }
-            objs[0].ClearRotation();
-            objs[0].AddRotation(new Vector3(0, 1, 0), angle / 180f * (float)Math.PI);
+            
 
 
-            angle += 10f;
+            duration += 1f;
+
+
+
+            camera.position.Y = 5 * (float)Math.Sin(duration/5);
+            camera.position.X = 5 * (float)Math.Cos(duration/5);
+
+            lights[0].position.Y = 4 * (float)Math.Sin(duration / 5);
+            lights[0].position.X = 5 * (float)Math.Cos(duration / 5);
+
+
+
 
             bool flag = Monitor.TryEnter(bitmap, 1000);
 
@@ -524,7 +540,7 @@ namespace RenderCS
                 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

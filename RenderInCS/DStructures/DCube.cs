@@ -2,50 +2,50 @@
 using System.Drawing;
 namespace RenderCS
 {
-    class DCube:DMesh
+    class DCubeMesh:DMesh
     {
         public float len, width, heigt;
 
-        public DCube(Vector3 _pos,float _len,float _height,float _width)
+        public DCubeMesh(float _len,float _height,float _width)
         {
-            worldPosition = _pos;
+            
             len = _len;
             width = _width;
             heigt = _height;
 
             //front
+            
+            AddVertex(new DVertex(len / 2, heigt / 2, width / 2) {normal = new Vector3(1,1,1), color = Color.White});//0
+            AddVertex(new DVertex(-len / 2, heigt / 2, width / 2) { normal = new Vector3(-1, 1, 1), color = Color.White });//1
+            AddVertex(new DVertex(len / 2, -heigt / 2, width / 2) { normal = new Vector3(1, -1, 1), color = Color.White });//2
+            AddVertex(new DVertex(-len / 2, -heigt / 2, width / 2) { normal = new Vector3(-1, -1, 1), color = Color.White });//3
 
-            vertexes.Add(new DVertex(len / 2, heigt / 2, width / 2) { color = Color.AliceBlue});//0
-            vertexes.Add(new DVertex(-len / 2, heigt / 2, width / 2) { color = Color.Red });//1
-            vertexes.Add(new DVertex(len / 2, -heigt / 2, width / 2) { color = Color.Yellow });//2
-            vertexes.Add(new DVertex(-len / 2, -heigt / 2, width / 2) { color = Color.Green });//3
-
-            vertexes.Add(new DVertex(len / 2, heigt / 2, -width / 2) { color = Color.Gray });//4
-            vertexes.Add(new DVertex(-len / 2, heigt / 2, -width / 2) { color = Color.HotPink });//5
-            vertexes.Add(new DVertex(len / 2, -heigt / 2, -width / 2) { color = Color.Ivory });//6
-            vertexes.Add(new DVertex(-len / 2, -heigt / 2, -width / 2) { color = Color.Moccasin });//7
+            AddVertex(new DVertex(len / 2, heigt / 2, -width / 2) { normal = new Vector3(1, 1, -1), color = Color.White });//4
+            AddVertex(new DVertex(-len / 2, heigt / 2, -width / 2) { normal = new Vector3(-1, 1, -1), color = Color.White });//5
+            AddVertex(new DVertex(len / 2, -heigt / 2, -width / 2) { normal = new Vector3(1, -1, -1), color = Color.White });//6
+            AddVertex(new DVertex(-len / 2, -heigt / 2, -width / 2) { normal = new Vector3(-1, -1, -1), color = Color.White });//7
 
 
 
             //front
-            faces.Enqueue(new DTriAngle(vertexes[0], vertexes[1], vertexes[2]));
-            faces.Enqueue(new DTriAngle(vertexes[1], vertexes[3], vertexes[2]));
+            AddFace(0, 1, 2);
+            AddFace(2, 1, 3);
             //behind
-            faces.Enqueue(new DTriAngle(vertexes[4], vertexes[5], vertexes[6]));
-            faces.Enqueue(new DTriAngle(vertexes[5], vertexes[7], vertexes[6]));
+            AddFace(5, 4, 7);
+            AddFace(7, 4, 6);         
 
             //top
-            faces.Enqueue(new DTriAngle(vertexes[4], vertexes[5], vertexes[0]));
-            faces.Enqueue(new DTriAngle(vertexes[5], vertexes[1], vertexes[0]));
+            AddFace(4, 5, 0);
+            AddFace(0, 5, 1);
             //bottom
-            faces.Enqueue(new DTriAngle(vertexes[6], vertexes[7], vertexes[2]));
-            faces.Enqueue(new DTriAngle(vertexes[7], vertexes[3], vertexes[2]));
+            AddFace(2, 3, 6);
+            AddFace(6, 3, 7);
             //left
-            faces.Enqueue(new DTriAngle(vertexes[1], vertexes[5], vertexes[3]));
-            faces.Enqueue(new DTriAngle(vertexes[5], vertexes[7], vertexes[3]));
+            AddFace(1, 5, 3);
+            AddFace(3, 5, 7);
             //right
-            faces.Enqueue(new DTriAngle(vertexes[4], vertexes[0], vertexes[2]));
-            faces.Enqueue(new DTriAngle(vertexes[0], vertexes[2], vertexes[6]));
+            AddFace(4, 0, 6);
+            AddFace(6, 0, 2);
 
         }
     }
