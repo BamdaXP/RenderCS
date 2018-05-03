@@ -12,7 +12,17 @@ namespace RenderCS
         public float w = 1f;
 
         public Color color;
+        public Vector3 vector
+        {
+            get
+            {
+                Vector3 v = new Vector3(x, y, z);
+                return v;
+            }
+
+        }
         public Vector3 normal;
+       
         #region four kinds of constructor
         public DVertex(float _x, float _y, float _z)
         {
@@ -41,7 +51,6 @@ namespace RenderCS
             x = v.x;
             y = v.y;
             z = v.z;
-            normal = v.normal;
             color = v.color;
         }
         #endregion
@@ -53,15 +62,10 @@ namespace RenderCS
             x = v.x;
             y = v.y;
             z = v.z;
-            normal = v.normal;
             color = v.color;
         }
 
-        public Vector3 ToVector()
-        {
-            Vector3 v = new Vector3(x, y, z);
-            return v;
-        }
+        
 
 
         public Point ToScreenPoint(ViewPort view)
@@ -87,12 +91,15 @@ namespace RenderCS
 
             float cos = (float)Math.Cos(angle);
             float sin = (float)Math.Sin(angle);
-            float x = axis.X;
-            float y = axis.Y;
-            float z = axis.Z;
-            this.x = ((1f - cos) * x * x + cos) * this.x + ((1f - cos) * x * y + sin * z) * this.y + ((1f - cos) * x * z - sin * y) * this.z;
-            this.y = ((1f - cos) * x * y - sin * z) * this.x + ((1f - cos) * y * y + cos) * this.y + ((1f - cos) * y * z + sin * x) * this.z;
-            this.z = ((1f - cos) * x * z + sin * y) * this.x + ((1f - cos) * y * z - sin * x) * this.y + ((1f - cos) * z * z + cos) * this.z;
+            float u = axis.X;
+            float v = axis.Y;
+            float w = axis.Z;
+            float x0 = x;
+            float y0 = y;
+            float z0 = z;
+            x = (u * u + (1f - u * u) * cos) * x0 + (u * v * (1f - cos) - w * sin) * y0 + (u * w * (1f - cos) + v * sin) * z0;
+            y = (u * v * (1f - cos) + w * sin) * x0 + (v * v + (1f - v * v) * cos) * y0 + (v * w * (1f - cos) - u * sin) * z0;
+            z = (u * w * (1f - cos) - v * sin) * x0 + (v * w * (1f - cos) + u * sin) * y0 + (w * w + (1f - w * w) * cos) * z0;
         }
         #region Matix Transfer
         public void PosRelatedTransfer(Vector3 pos)

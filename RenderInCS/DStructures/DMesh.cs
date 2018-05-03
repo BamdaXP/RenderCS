@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-
+using System.Drawing;
 
 namespace RenderCS
 {
@@ -25,8 +25,9 @@ namespace RenderCS
             faces = new List<int[]>();
         }
 
-        public void AddVertex(DVertex v)
+        public void AddVertex(float x,float y,float z,Color _color)
         {
+            DVertex v = new DVertex(x, y, z) { color = _color };
             vertexes.Add(v);
             vertexCount++;
         }

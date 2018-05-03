@@ -57,6 +57,7 @@ namespace RenderCS
             {
                 DVertex v = matureVertexes[i];
                 v.Assign(mesh.vertexes[i]);
+                v.normal = mesh.vertexes[i].vector;
 
                 foreach (var rotation in rotations)
                 {
@@ -102,7 +103,7 @@ namespace RenderCS
         public void UpdateDObject(Camera camera)
         {
             MaturateVertexes(camera);
-            //FadeBehind(camera);
+            FadeBehind(camera);
         }
     }
 }

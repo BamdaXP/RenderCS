@@ -11,8 +11,8 @@ namespace RenderCS
         public Vector3 position;
         public Vector3 towards;
 
-        public float fovy = 90f / 180f * (float)Math.PI;
-        public float aspect = 6f / 8f;
+        public float fovy = 20f / 180f * (float)Math.PI;
+        public float aspect = 1f;
         public float farZ = 100f;
         public float nearZ = 1f;
 

@@ -5,16 +5,16 @@ namespace RenderCS
 {
     public class Light
     {
-        public float intensity = 1f;
+        public float intensity = 0.5f;
         public Vector3 position;
-        public Color ambient = Color.Red;
+        public Color ambient = Color.White;
         public Color fusion = Color.White;
-        public Color perspect = Color.Yellow;
+        public Color perspect = Color.White;
 
         public float ambientK = 0.1f;
         public float fusionK = 0.1f;
-        public float perspectK = 1f;
-        public float perspectN = 2f;
+        public float perspectK = 0.8f;
+        public float perspectN = 4f;
 
         public Light(Vector3 _pos)
         {
@@ -29,12 +29,12 @@ namespace RenderCS
             Vector3 per = new Vector3(perspect.R, perspect.G, perspect.B);
 
 
-            Vector3 vi = Vector3.Subtract(position, dv.ToVector());
-            Vector3 vo = Vector3.Subtract(camera.position, dv.ToVector());
+            Vector3 vi = Vector3.Subtract(position, dv.vector);
+            Vector3 vo = Vector3.Subtract(camera.position, dv.vector);
             float cosi = Vector3.Dot(vi, dv.normal) / (vi.Length() * dv.normal.Length());
             float coso = Vector3.Dot(vo, dv.normal) / (vo.Length() * dv.normal.Length());
 
-            Vector3 colorV = amb * ambientK + fus * cosi * fusionK + per * (float)Math.Pow(coso, perspectN) * perspectK;
+            Vector3 colorV = intensity*(amb * ambientK + fus * cosi * fusionK + per * (float)Math.Pow(coso, perspectN) * perspectK);
 
             int r = (int)(ori.X * colorV.X / 255);
             if (r >255)

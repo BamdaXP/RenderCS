@@ -23,7 +23,7 @@ namespace RenderCS
         public ViewPort view;
 
         public System.Windows.Forms.Timer timer;
-        public int deltaTime = 500;//in ms
+        public int deltaTime = 20;//in ms
         //public delegate void Update();
 
         public List<DObject> objs;
@@ -90,8 +90,8 @@ namespace RenderCS
 
         public void AddCube()
         {
-            DMesh cubeMesh = new DCubeMesh(6, 6, 6);
-            DObject cube = new DObject(new Vector3(0,0,-10),cubeMesh);
+            DMesh cubeMesh = new DCubeMesh(3, 3, 3);
+            DObject cube = new DObject(new Vector3(0,0,-15),cubeMesh);
 
             objs.Add(cube);
         }
@@ -158,10 +158,16 @@ namespace RenderCS
             {
                 if (flag)
                 {
-                Point a = tri.p1.ToScreenPoint(view);
-                Point b = tri.p2.ToScreenPoint(view);
-                Point c = tri.p3.ToScreenPoint(view);
-                SetTri(a, b, c, tri.p1.color, tri.p2.color, tri.p3.color);
+
+                    Point a = tri.p1.ToScreenPoint(view);
+                    Point b = tri.p2.ToScreenPoint(view);
+                    Point c = tri.p3.ToScreenPoint(view);
+                    Color ca = tri.p1.color;
+                    Color cb = tri.p2.color;
+                    Color cc = tri.p3.color;
+
+
+                SetTri(a, b, c, ca, cb, cc);
                 }
             }
             catch (Exception)
@@ -227,8 +233,15 @@ namespace RenderCS
                 {
                     Vector4 vcc = Vector4.Lerp(va, vb, (x - from.X) / (float)Math.Abs(dx));
                     Color color = Color.FromArgb((int)(vcc.W), (int)(vcc.X), (int)(vcc.Y), (int)(vcc.Z));
-                    
-                    
+
+                    if (x >= bitmap.Width || x < 0)
+                    {
+                        break;
+                    }
+                    if (y >= bitmap.Height || x < 0)
+                    {
+                        break;
+                    }
 
                     SetPixel(new Point(x, y),color);
 
@@ -248,7 +261,14 @@ namespace RenderCS
                 for (y = from.Y; y <= to.Y; y += sy)
                 {
 
-
+                    if (x >= bitmap.Width || x < 0)
+                    {
+                        break;
+                    }
+                    if (y >= bitmap.Height || x < 0)
+                    {
+                        break;
+                    }
 
                     Vector4 vcc = Vector4.Lerp(va, vb, (y - from.Y) / (float)Math.Abs(dy));
                     Color color = Color.FromArgb((int)(vcc.W), (int)(vcc.X), (int)(vcc.Y), (int)(vcc.Z));
@@ -414,12 +434,12 @@ namespace RenderCS
                 tmp = bottom1;
                 bottom1 = bottom2;
                 bottom2 = tmp;
-
+                
                 Color tp = new Color();
                 tp =color1;
                 color1 = color2;
                 color2 = tp;
-
+                
             }
 
             Vector4 vc1 = new Vector4(color1.R, color1.G, color1.B, color1.A);
@@ -458,11 +478,12 @@ namespace RenderCS
                 tmp = top1;
                 top1 = top2;
                 top2 = tmp;
-
+                
                 Color tp = new Color();
                 tp = color1;
                 color1 = color2;
                 color2 = tp;
+                
             }
             for (int y = top1.Y; y <= bottom.Y; y++)
             {
@@ -503,16 +524,28 @@ namespace RenderCS
             Clear(Color.Black);
 
             objs[0].ClearRotation();
-            //objs[0].AddRotation(new Vector3(0, 1, 0), duration*5 / 180f * (float)Math.PI);
+            objs[0].AddRotation(new Vector3(0, 1, 0), duration*5 / 180f * (float)Math.PI);
 
             foreach (var obj in objs)
             {
                 
                 obj.UpdateDObject(camera);
                 obj.Lighten(lights,camera);
-                DrawDObject(obj);
+                  DrawDObject(obj);
             }
-            
+
+
+
+            Point a = new Point(10, 10);
+            Point b = new Point(40, 50);
+            Point c = new Point(40, 10);
+            Point d = new Point(10, 50);
+
+            SetTri(a, b, c, objs[0].matureFaces[0].p1.color, objs[0].matureFaces[0].p2.color, objs[0].matureFaces[0].p3.color);
+            SetTri(a, d, b, objs[0].matureFaces[1].p1.color, objs[0].matureFaces[1].p2.color, objs[0].matureFaces[1].p3.color);
+
+
+
 
 
             duration += 1f;
@@ -522,8 +555,8 @@ namespace RenderCS
             camera.position.Y = 5 * (float)Math.Sin(duration/5);
             camera.position.X = 5 * (float)Math.Cos(duration/5);
 
-            lights[0].position.Y = 4 * (float)Math.Sin(duration / 5);
-            lights[0].position.X = 5 * (float)Math.Cos(duration / 5);
+            //lights[0].position.Y = 4 * (float)Math.Sin(duration / 5);
+            //lights[0].position.X = 5 * (float)Math.Cos(duration / 5);
 
 
 
@@ -535,7 +568,7 @@ namespace RenderCS
                 if (flag)
                 {
                     graphics.DrawImage(bitmap, 0, 0);
-                    Console.WriteLine("aa");
+                    Console.WriteLine("A frame has been drawn");
                 }
                 
 

@@ -21,14 +21,14 @@ namespace RenderCS
         public Vector3 normal
         { get
             {
-                Vector3 normal = Vector3.Cross(p2.ToVector() - p1.ToVector(), p3.ToVector() - p2.ToVector());
+                Vector3 normal = Vector3.Cross(p2.vector - p1.vector, p3.vector - p2.vector);
                 return normal;
             }
 
             private set { normal = value; }
         }
 
-        public bool visible = true;
+        public bool visible = false;
 
         public DTriAngle(DVertex _p1, DVertex _p2, DVertex _P3)
         {
@@ -39,14 +39,17 @@ namespace RenderCS
 
         public void SetVisibility(Camera camera)
         {
-            if (Vector3.Dot(Vector3.Subtract(p1.ToVector(), camera.position), normal) > 0
-                && Vector3.Dot(Vector3.Subtract(p2.ToVector(), camera.position), normal) > 0
-                && Vector3.Dot(Vector3.Subtract(p3.ToVector(), camera.position), normal) > 0
-                )
+            Vector3 viewLine1 = Vector3.Subtract(p1.vector, camera.position);
+            Vector3 viewLine2 = Vector3.Subtract(p2.vector, camera.position);
+            Vector3 viewLine3 = Vector3.Subtract(p3.vector, camera.position);
+
+            float i = Vector3.Dot(viewLine1, p1.normal);
+            float j = Vector3.Dot(viewLine2, p2.normal);
+            float k = Vector3.Dot(viewLine3, p3.normal);
+            if (i>0&&j>0&&k>0)
             {
                 visible = false;
-            }
-            else
+            }else
             {
                 visible = true;
             }
